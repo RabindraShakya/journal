@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Journal Entry Page</title>
+        <!--        <style>
+                    html, body {
+                        height: 100%;
+                    }
+        
+                    html {
+                        display: table;
+                        margin: auto;
+                    }
+        
+                    body {
+                        display: table-cell;
+                        vertical-align: middle;
+                    }
+                </style>-->
+    </h:head>
+    <h:body>
+
+        <h:form id="journal">
+            <p:growl id="growl" showDetail="true" />
+            <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+            <p:panelGrid columns="2" style="float: right;margin-right: 20%;margin-top: 5%">               
+                <h:outputText value="Enter Date for filter:"/>
+                <p:calendar id="date" value="#{mainManagedBean.enterDate}" pattern="yyyy-MM-dd" styleClass="form-control"/> 
+
+                <p:spacer/>
+                <h:commandButton value="Search" action="#{mainManagedBean.findResultsWithSpecificDate()}" immediate="true"/> 
+            </p:panelGrid>  
+
+            <p:panelGrid columns="2" style="margin-left: 30%">
+                <h:outputText value="Title"/>
+                <h:inputText id="title" value="#{mainManagedBean.title}" required="true" requiredMessage="Title Required" 
+                             styleClass="form-control" maxlength="100"/>
+
+                <h:outputText value="Body"/>
+                <h:inputTextarea id="body" value="#{mainManagedBean.body}" required="true" requiredMessage="Body Required" rows="5" cols="22"/>
+
+                <h:outputText value="Date"/>
+                <p:calendar id="date1" value="#{mainManagedBean.date}" pattern="yyyy-MM-dd" mask="true" required="true" requiredMessage="Date Required"/>
+
+                <h:commandButton value="Submit" action="#{mainManagedBean.sendJornal()}" /> 
+                <h:commandButton value="ViewAllRecords" action="#{mainManagedBean.getAllRecords()}" immediate="true"/>                 
+            </p:panelGrid>   
+
+
+
+            <div class="table" >
+                <p:dataTable var="records" value="#{mainManagedBean.recordList}" rows="5"
+                             paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5">
+                    <p:column headerText="Id">
+                        <h:outputText value="#{records.id}" />
+                    </p:column>
+
+                    <p:column headerText="Title">
+                        <h:outputText value="#{records.title}" />
+                    </p:column>
+
+                    <p:column headerText="Body">
+                        <h:outputText value="#{records.body}" />
+                    </p:column>
+
+                    <p:column headerText="Date">
+                        <h:outputText value="#{mainManagedBean.dateFormatter(records.entryDate)}"/> 
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+        </h:form>
+
+
+
+    </h:body>
+</html>
+
